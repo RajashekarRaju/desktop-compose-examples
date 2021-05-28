@@ -1,5 +1,6 @@
 package movieApiExample.network
 
+import movieApiExample.model.Movie
 import java.net.MalformedURLException
 import java.net.URI
 import java.net.URL
@@ -11,13 +12,13 @@ private const val SCHEME_AUTHORITY = "https://api.themoviedb.org/"
 private const val APPEND_PATH_VERSION = "3/"
 private const val APPEND_PATH_MOVIE = "movie/"
 private const val API_PARAM = "api_key"
-private const val API_KEY = "YOUR_API_KEY"
+private const val API_KEY = ""
 
 private const val APPEND_URL_ENDPOINT = "?"
 private const val APPEND_QUERY_PARAMETER = "="
 
 const val APPEND_PATH_POPULAR = "popular"
-const val TOP_RATED_MOVIE_PATH = "top_rated"
+const val MOVIE_PATH_TOP_RATED = "top_rated"
 const val APPEND_PATH_UPCOMING = "upcoming"
 const val APPEND_PATH_NOW_PLAYING = "now_playing"
 const val APPEND_PATH_SIMILAR = "similar"
@@ -48,4 +49,9 @@ fun movieUriBuilder(
         e.printStackTrace()
     }
     return url
+}
+
+fun buildMovieType(movieType: String): List<Movie> {
+    val builtUrl = movieUriBuilder(movieType).toString()
+    return getJsonMovieData(createUrl(builtUrl))
 }

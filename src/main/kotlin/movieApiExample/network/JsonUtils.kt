@@ -29,7 +29,7 @@ fun getJsonMovieData(newJSON: String?): List<Movie> {
             val overView: String? = jsonObject.getString("overview")
             val releaseDate: String? = jsonObject.getString("release_date")
 
-            val bannerEndPoint: String? = jsonObject.getString("backdrop_path")
+            val bannerEndPoint: String? = jsonObject.getString("poster_path")
             val bannerUrl: String = IMAGE_PATH_URL + bannerEndPoint
 
             // Create a new {@link Movie} object with required properties
