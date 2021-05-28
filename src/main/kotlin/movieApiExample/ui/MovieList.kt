@@ -7,105 +7,74 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import movieApiExample.loadNetworkImage
 import movieApiExample.model.Movie
-import movieApiExample.network.loadNetworkImage
+import movieApiExample.network.*
 
 
 @ExperimentalAnimationApi
 @Composable
-fun moviesList(
-    movieData: List<Movie>
-) {
-    Scaffold(
-        topBar = {
-            Text(
-                text = "Movies from TMDB Api",
-                style = MaterialTheme.typography.h2,
-                modifier = Modifier.padding(vertical = 20.dp)
-            )
-        }
+fun moviesList() {
+
+    Column(
+        modifier = Modifier.padding(16.dp)
     ) {
-        moviesListBody(movieData)
+        title("Popular")
+        poster(buildMovieType(APPEND_PATH_POPULAR))
+
+        title("Top Rated")
+        poster(buildMovieType(MOVIE_PATH_TOP_RATED))
+
+        title("Now Playing")
+        poster(buildMovieType(APPEND_PATH_NOW_PLAYING))
+
+        title("Upcoming")
+        poster(buildMovieType(APPEND_PATH_UPCOMING))
     }
 }
 
-@ExperimentalAnimationApi
 @Composable
-fun moviesListBody(
-    movieData: List<Movie>
+fun title(
+    movieType: String
+) {
+    Text(
+        text = movieType,
+        style = MaterialTheme.typography.h4,
+        modifier = Modifier.padding(top = 20.dp, bottom = 8.dp)
+    )
+}
+
+@Composable
+fun poster(
+    movieList: List<Movie>
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = Modifier.fillMaxWidth()
     ) {
-        items(movieData) { movie ->
-            movieRow(movie)
+        items(movieList) { movie ->
+            moviesRow(movie)
         }
     }
 }
 
 @Composable
-fun movieRow(
+fun moviesRow(
     movie: Movie
 ) {
     Card(
-        Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium
     ) {
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxWidth(),
-            //.padding(24.dp),
-            verticalArrangement = Arrangement.Center
-        ) {
-
-            Image(
-                bitmap = loadNetworkImage(movie.bannerUrl),
-                contentDescription = "",
-                modifier = Modifier.size(width = 300.dp, height = 200.dp),
-                contentScale = ContentScale.Crop
-            )
-
-            Spacer(Modifier.height(8.dp))
-
-            Text(
-                text = movie.title!!,
-                style = MaterialTheme.typography.h5,
-                color = Color.Gray,
-                modifier = Modifier.width(200.dp).align(Alignment.CenterHorizontally),
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(Modifier.height(24.dp))
-
-            Text(
-                text = movie.releaseDate!!,
-                style = MaterialTheme.typography.h6,
-                color = Color.Gray
-            )
-
-            Spacer(Modifier.height(24.dp))
-
-            Text(
-                text = movie.overView!!,
-                style = MaterialTheme.typography.subtitle1,
-                color = Color.Gray,
-                modifier = Modifier.width(200.dp).height(300.dp)
-            )
-        }
+        Image(
+            bitmap = loadNetworkImage(movie.bannerUrl),
+            contentDescription = "Movie Poster",
+            modifier = Modifier.size(width = 120.dp, height = 180.dp),
+            contentScale = ContentScale.Crop
+        )
     }
 }

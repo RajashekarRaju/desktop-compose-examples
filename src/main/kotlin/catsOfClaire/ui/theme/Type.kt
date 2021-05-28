@@ -16,7 +16,7 @@ val typography = Typography(
     ),
     h4 = TextStyle(
         fontWeight = FontWeight.W700,
-        fontSize = 32.sp
+        fontSize = 28.sp
     ),
     h5 = TextStyle(
         fontWeight = FontWeight.W600,
