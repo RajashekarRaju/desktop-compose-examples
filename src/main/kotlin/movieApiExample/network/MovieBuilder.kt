@@ -1,57 +1,107 @@
 package movieApiExample.network
 
+import movieApiExample.model.Cast
 import movieApiExample.model.Movie
-import java.net.MalformedURLException
+import movieApiExample.model.MovieDetail
+import org.jetbrains.skija.impl.Log
 import java.net.URI
 import java.net.URL
 
+// https://api.themoviedb.org/3/movie/popular?api_key=
+// https://api.themoviedb.org/3/movie/454292/similar?api_key=
+// https://api.themoviedb.org/3/search/movie?api_key=&query=salt
+// https://api.themoviedb.org/3/movie/454292/credits?api_key=
 
-// https://api.themoviedb.org/3/movie/popular?api_key=YOUR_API_KEY
-
-private const val SCHEME_AUTHORITY = "https://api.themoviedb.org/"
-private const val APPEND_PATH_VERSION = "3/"
-private const val APPEND_PATH_MOVIE = "movie/"
-private const val API_PARAM = "api_key"
-private const val API_KEY = ""
-
-private const val APPEND_URL_ENDPOINT = "?"
-private const val APPEND_QUERY_PARAMETER = "="
-
-const val APPEND_PATH_POPULAR = "popular"
-const val MOVIE_PATH_TOP_RATED = "top_rated"
-const val APPEND_PATH_UPCOMING = "upcoming"
-const val APPEND_PATH_NOW_PLAYING = "now_playing"
-const val APPEND_PATH_SIMILAR = "similar"
-
-private const val APPEND_PATH_PERSON = "person"
-private const val REVIEWS_PATH = "reviews"
-private const val CAST_PATH = "credits"
-
-private const val commonPath = SCHEME_AUTHORITY + APPEND_PATH_VERSION + APPEND_PATH_MOVIE
-private const val assignApiKey = API_PARAM + APPEND_QUERY_PARAMETER + API_KEY
-
-/**
- * @return The URL to use to query the movie database server.
- *
- * movieType = Replace this string with "popular", "now_playing", "top_rated".
- */
-fun movieUriBuilder(
+fun buildMovieListType(
     movieType: String
-): URL? {
-
-    val builtUrl = commonPath + movieType + APPEND_URL_ENDPOINT + assignApiKey
-    val baseUri = URI.create(builtUrl)
-    var url: URL? = null
-
-    try {
-        url = URL(baseUri.toString())
-    } catch (e: MalformedURLException) {
-        e.printStackTrace()
-    }
-    return url
+): List<Movie> {
+    val builtUrl = movieTypeUriBuilder(movieType)
+    return getJsonMovieData(createUrl(builtUrl))
 }
 
-fun buildMovieType(movieType: String): List<Movie> {
-    val builtUrl = movieUriBuilder(movieType).toString()
+fun buildMovieDetails(
+    movieId: Int
+): MovieDetail? {
+    val builtUrl = movieDetailUriBuilder(movieId)
+    return getJsonSelectedMovieData(createUrl(builtUrl))
+}
+
+fun buildRecommendedMovies(
+    movieId: Int
+): List<Movie> {
+    val builtUrl = movieRecommendationsUriBuilder(movieId)
     return getJsonMovieData(createUrl(builtUrl))
+}
+
+fun buildMovieCredits(
+    movieId: Int
+): List<Cast> {
+    val builtUrl = movieCreditsUriBuilder(movieId)
+    return getJsonMovieCreditsData(createUrl(builtUrl))
+}
+
+fun buildQuerySearchedMovies(
+    query: String
+): List<Movie> {
+    val builtUrl = movieSearchQueryBuilder(query)
+    return getJsonMovieData(createUrl(builtUrl))
+}
+
+/**
+ * movieType = Replace this string with "popular", "now_playing", "top_rated", "upcoming".
+ *
+ * https://api.themoviedb.org/3/movie/popular?api_key=YOUR_API_KEY
+ */
+fun movieTypeUriBuilder(
+    movieType: String
+): URL {
+    val builtUrl = "$MOVIE_PATH$movieType$APPEND_URL_ENDPOINT$assignApiKey"
+    val baseUri = URI.create(builtUrl)
+    return URL(baseUri.toString())
+}
+
+/**
+ * https://api.themoviedb.org/3/movie/27576?api_key=d77b5ab884174f60f4c9e8f50a70d99c
+ */
+fun movieDetailUriBuilder(
+    movieId: Int
+): URL {
+    val builtUrl = "$MOVIE_PATH$movieId$APPEND_URL_ENDPOINT$assignApiKey"
+    val baseUri = URI.create(builtUrl)
+    return URL(baseUri.toString())
+}
+
+/**
+ * https://api.themoviedb.org/3/movie/454292/recommendations?api_key=
+ */
+fun movieRecommendationsUriBuilder(
+    movieId: Int
+): URL {
+    val builtUrl = "$MOVIE_PATH$movieId/$APPEND_PATH_RECOMMENDATIONS$APPEND_URL_ENDPOINT$assignApiKey"
+    val baseUri = URI.create(builtUrl)
+    return URL(baseUri.toString())
+}
+
+/**
+ * https://api.themoviedb.org/3/search/movie?api_key=&query=salt
+ */
+fun movieSearchQueryBuilder(
+    query: String
+): URL {
+    val assignQuery = "$QUERY_PARAM$APPEND_QUERY_PARAMETER$query"
+    val builtUrl = "$SEARCH_BASE_PATH$assignApiKey$APPEND_PARAMETER$assignQuery"
+    val baseUri = URI.create(builtUrl)
+    Log.error("Search query is $baseUri")
+    return URL(baseUri.toString())
+}
+
+/**
+ * https://api.themoviedb.org/3/movie/454292/recommendations?api_key=
+ */
+fun movieCreditsUriBuilder(
+    movieId: Int
+): URL {
+    val builtUrl = "$MOVIE_PATH$movieId/$APPEND_PATH_CREDITS$APPEND_URL_ENDPOINT$assignApiKey"
+    val baseUri = URI.create(builtUrl)
+    return URL(baseUri.toString())
 }

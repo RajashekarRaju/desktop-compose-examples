@@ -7,7 +7,21 @@ import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
 
-fun getResponseFromHttpUrl(requestUrl: URL?): String {
+fun createUrl(
+    requestUrl: URL
+): String {
+    var url: URL? = null
+    try {
+        url = URL(requestUrl.toString())
+    } catch (e: MalformedURLException) {
+        Log.error("Problem building the URL - $e")
+    }
+    return getResponseFromHttpUrl(url)
+}
+
+fun getResponseFromHttpUrl(
+    requestUrl: URL?
+): String {
 
     val httpsURLConnection: HttpsURLConnection = requestUrl?.openConnection() as HttpsURLConnection
     var response = ""
@@ -27,14 +41,4 @@ fun getResponseFromHttpUrl(requestUrl: URL?): String {
     }
 
     return response
-}
-
-fun createUrl(stringUrl: String): String {
-    var url: URL? = null
-    try {
-        url = URL(stringUrl)
-    } catch (e: MalformedURLException) {
-        Log.error("Problem building the URL - $e")
-    }
-    return getResponseFromHttpUrl(url)
 }

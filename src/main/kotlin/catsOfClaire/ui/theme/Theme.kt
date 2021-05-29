@@ -10,6 +10,9 @@ private val DarkColorPalette = darkColors(
     primaryVariant = grey700,
     secondary = grey500,
     secondaryVariant = grey300,
+    background = black,
+    onBackground = grey100,
+    surface = grey900
 )
 
 private val LightColorPalette = lightColors(
@@ -17,18 +20,24 @@ private val LightColorPalette = lightColors(
     primaryVariant = grey900,
     secondary = grey700,
     secondaryVariant = grey900,
-    background = grey100
+    background = white,
+    onBackground = grey900,
+    surface = grey100
 )
 
 @Composable
 fun commonDesktopTheme(
+    darkTheme: Boolean,
     content: @Composable () -> Unit
 ) {
-    val colors = DarkColorPalette
+    val colors = if (darkTheme) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
+    }
 
     MaterialTheme(
         colors = colors,
-        typography = typography,
         shapes = shapes,
         content = content
     )
