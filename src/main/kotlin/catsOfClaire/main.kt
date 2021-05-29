@@ -7,7 +7,7 @@ import catsOfClaire.ui.theme.commonDesktopTheme
 
 @ExperimentalAnimationApi
 fun main() = Window {
-    commonDesktopTheme {
+    commonDesktopTheme(true) {
         catsList()
     }
 }
