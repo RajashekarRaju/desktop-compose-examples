@@ -1,45 +1,52 @@
 package movieApiExample.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import movieApiExample.loadNetworkImage
 import movieApiExample.model.Movie
-import movieApiExample.network.*
-
+import movieApiExample.repository.AppRepository
+import org.jetbrains.skija.impl.Log
 
 @ExperimentalAnimationApi
 @Composable
-fun moviesList() {
+fun moviesList(
+    repository: AppRepository = AppRepository()
+) {
 
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ) {
-        title("Popular")
-        poster(buildMovieType(APPEND_PATH_POPULAR))
+    Surface {
 
-        title("Top Rated")
-        poster(buildMovieType(MOVIE_PATH_TOP_RATED))
+        Column(
+            modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(
+                state = ScrollState(1), enabled = true
+            )
+        ) {
+            categoryTitle("Popular")
+            poster(repository.getPopularMovies())
 
-        title("Now Playing")
-        poster(buildMovieType(APPEND_PATH_NOW_PLAYING))
+            categoryTitle("Top Rated")
+            poster(repository.getTopRatedMovies())
 
-        title("Upcoming")
-        poster(buildMovieType(APPEND_PATH_UPCOMING))
+            categoryTitle("Now Playing")
+            poster(repository.getNowPlayingMovies())
+
+            categoryTitle("Upcoming")
+            poster(repository.getUpcomingMovies())
+        }
     }
 }
 
 @Composable
-fun title(
+fun categoryTitle(
     movieType: String
 ) {
     Text(
@@ -65,16 +72,19 @@ fun poster(
 
 @Composable
 fun moviesRow(
-    movie: Movie
+    movie: Movie,
+    repository: AppRepository = AppRepository()
 ) {
     Card(
         shape = MaterialTheme.shapes.medium
     ) {
         Image(
-            bitmap = loadNetworkImage(movie.bannerUrl),
+            bitmap = repository.getImage(movie.bannerUrl),
             contentDescription = "Movie Poster",
-            modifier = Modifier.size(width = 120.dp, height = 180.dp),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(width = 120.dp, height = 180.dp).clickable {
+                Log.error("Movie id is ${movie.movieId}")
+            },
         )
     }
 }
