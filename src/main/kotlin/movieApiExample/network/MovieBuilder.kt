@@ -11,6 +11,7 @@ import java.net.URL
 // https://api.themoviedb.org/3/movie/454292/similar?api_key=
 // https://api.themoviedb.org/3/search/movie?api_key=&query=salt
 // https://api.themoviedb.org/3/movie/454292/credits?api_key=
+// https://api.themoviedb.org/3/movie/27576?api_key=
 
 fun buildMovieListType(
     movieType: String
@@ -30,6 +31,13 @@ fun buildRecommendedMovies(
     movieId: Int
 ): List<Movie> {
     val builtUrl = movieRecommendationsUriBuilder(movieId)
+    return getJsonMovieData(createUrl(builtUrl))
+}
+
+fun buildSimilarMovies(
+    movieId: Int
+): List<Movie> {
+    val builtUrl = movieSimilarUriBuilder(movieId)
     return getJsonMovieData(createUrl(builtUrl))
 }
 
@@ -61,7 +69,7 @@ fun movieTypeUriBuilder(
 }
 
 /**
- * https://api.themoviedb.org/3/movie/27576?api_key=d77b5ab884174f60f4c9e8f50a70d99c
+ * https://api.themoviedb.org/3/movie/27576?api_key=
  */
 fun movieDetailUriBuilder(
     movieId: Int
@@ -78,6 +86,17 @@ fun movieRecommendationsUriBuilder(
     movieId: Int
 ): URL {
     val builtUrl = "$MOVIE_PATH$movieId/$APPEND_PATH_RECOMMENDATIONS$APPEND_URL_ENDPOINT$assignApiKey"
+    val baseUri = URI.create(builtUrl)
+    return URL(baseUri.toString())
+}
+
+/**
+ * https://api.themoviedb.org/3/movie/454292/recommendations?api_key=
+ */
+fun movieSimilarUriBuilder(
+    movieId: Int
+): URL {
+    val builtUrl = "$MOVIE_PATH$movieId/$APPEND_PATH_SIMILAR$APPEND_URL_ENDPOINT$assignApiKey"
     val baseUri = URI.create(builtUrl)
     return URL(baseUri.toString())
 }

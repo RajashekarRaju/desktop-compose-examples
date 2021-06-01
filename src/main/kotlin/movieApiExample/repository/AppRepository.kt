@@ -10,7 +10,8 @@ class AppRepository {
 
     // Salt -> 27576
     // JW3 -> 458156
-    val parseMovieId: Int = 458156
+    // Telugu -> 454292
+    val parseMovieId: Int = 454292
 
     fun getPopularMovies(): List<Movie> = buildMovieListType(TYPE_MOVIES_POPULAR)
     fun getTopRatedMovies(): List<Movie> = buildMovieListType(TYPE_MOVIES_TOP_RATED)
@@ -21,11 +22,15 @@ class AppRepository {
         return buildRecommendedMovies(movieId)
     }
 
+    fun getSimilarMovies(movieId: Int = parseMovieId): List<Movie> {
+        return buildSimilarMovies(movieId)
+    }
+
     fun getMovieCastCredits(movieId: Int = parseMovieId): List<Cast> {
         return buildMovieCredits(movieId)
     }
 
-    fun getQuerySearchedMovies(query: String = "john"): List<Movie> {
+    fun getQuerySearchedMovies(query: String): List<Movie> {
         return buildQuerySearchedMovies(query)
     }
 

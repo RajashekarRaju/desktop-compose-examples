@@ -28,7 +28,7 @@ const val TYPE_MOVIES_UPCOMING = "upcoming"
 const val TYPE_MOVIES_NOW_PLAYING = "now_playing"
 // const val TYPE_MOVIES_LATEST = "latest"
 
-// const val APPEND_PATH_SIMILAR = "similar"
+const val APPEND_PATH_SIMILAR = "similar"
 const val APPEND_PATH_RECOMMENDATIONS = "recommendations"
 
 // private const val APPEND_PATH_PERSON = "person"
