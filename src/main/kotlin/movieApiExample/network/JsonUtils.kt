@@ -103,10 +103,13 @@ fun getJsonSelectedMovieData(
         val releaseDate: String? = jsonObject.getString("release_date")
         val posterEndPoint: String? = jsonObject.getString("poster_path")
         val bannerEndPoint: String? = jsonObject.getString("backdrop_path")
+        val budget: Long = jsonObject.getLong("budget")
+        val revenue: Long = jsonObject.getLong("revenue")
+        val runtime: Int = jsonObject.getInt("runtime")
         val bannerUrl: String = IMAGE_PATH_BANNER_URL + bannerEndPoint
         val posterUrl: String = IMAGE_PATH_URL + posterEndPoint
 
-        movieDetail = MovieDetail(movieId, title, overView, releaseDate, posterUrl, bannerUrl)
+        movieDetail = MovieDetail(movieId, title, overView, releaseDate, posterUrl, bannerUrl, budget, revenue, runtime)
 
     } catch (e: JSONException) {
         Log.error("Problem parsing the Selected Movie JSON results $e")

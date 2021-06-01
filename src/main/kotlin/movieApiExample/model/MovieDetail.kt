@@ -6,5 +6,8 @@ data class MovieDetail(
     val overView: String?,
     val releaseDate: String?,
     val posterUrl: String?,
-    val bannerUrl: String?
+    val bannerUrl: String?,
+    val budget: Long?,
+    val revenue: Long?,
+    val runtime: Int
 )

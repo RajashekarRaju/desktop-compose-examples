@@ -5,9 +5,6 @@ import androidx.compose.desktop.Window
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.Surface
 import catsOfClaire.ui.theme.commonDesktopTheme
-import movieApiExample.model.MovieDetail
-import movieApiExample.network.buildMovieDetails
-import movieApiExample.repository.AppRepository
 import movieApiExample.ui.movieDetail
 
 
@@ -24,11 +21,24 @@ fun main() = Window {
 
             // Shows detail for movie based on passed ID value
             // Test my movie ID -> 27576
-            val movieId = AppRepository().parseMovieId
-            val movieDetails: MovieDetail? = buildMovieDetails(movieId)
-            movieDetail(movieDetails)
+            // val movieId = AppRepository().parseMovieId
+            // val movieDetails: MovieDetail? = buildMovieDetails(movieId)
+            movieDetail()
 
             // searchList()
         }
     }
 }
+
+//@ExperimentalAnimationApi
+//@Composable
+//fun navScreen() {
+//
+//    var showDetails by rememberSaveable { mutableStateOf(false) }
+//
+//    if (!showDetails) {
+//        moviesList()
+//    } else {
+//        movieDetail()
+//    }
+//}
