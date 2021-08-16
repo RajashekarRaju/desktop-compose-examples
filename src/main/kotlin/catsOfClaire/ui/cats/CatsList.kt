@@ -91,7 +91,7 @@ private fun catRow(
         ) {
 
             AnimatedVisibility(
-                initiallyVisible = false, visible = true
+                visible = true
             ) {
                 Image(
                     bitmap = imageResource(cat.catImage),

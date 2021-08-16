@@ -11,7 +11,7 @@ const val APPEND_URL_ENDPOINT = "?"
 const val APPEND_PARAMETER = "&"
 const val QUERY_PARAM = "query"
 const val PATH = "/"
-const val assignApiKey = API_PARAM + APPEND_QUERY_PARAMETER + API_KEY
+const val assignApiKey = API_PARAM + APPEND_QUERY_PARAMETER + "YOUR_API_KEY"
 
 private const val SCHEME_AUTHORITY = "https://api.themoviedb.org/"
 private const val APPEND_PATH_VERSION = "3/"
